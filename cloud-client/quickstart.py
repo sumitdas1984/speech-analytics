@@ -30,7 +30,7 @@ def run_quickstart():
     file_name = os.path.join(
         os.path.dirname(__file__),
         'resources',
-        'test.flac')
+        'output1.flac')
 
     # Loads the audio into memory
     with io.open(file_name, 'rb') as audio_file:
