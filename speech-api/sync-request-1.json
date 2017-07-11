@@ -1,0 +1,10 @@
+{
+  "config": {
+      "encoding":"MP3",
+      "sampleRateHertz": 16000,
+      "languageCode": "en-US"
+  },
+  "audio": {
+      "uri":"https://drive.google.com/open?id=0B7uf3xkES5JfTkU4S091QVFkSFE"
+  }
+}
