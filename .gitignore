@@ -1,1 +1,4 @@
 data/
+sphinx-speech-api/dict/
+sphinx-speech-api/lm/
+sphinx-speech-api/hmm/

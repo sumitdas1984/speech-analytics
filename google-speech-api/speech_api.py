@@ -53,9 +53,9 @@ def stt_offline(input_audio_file):
 	try:
 	    output = r.recognize_google(audio)
 	    print("The audio file contains: " + output)
-	    f = open('output.txt', 'w')
-	    f.write(output)
-	    f.close()
+	    # f = open('output.txt', 'w')
+	    # f.write(output)
+	    # f.close()
 
 	    if file_extension == '.mp3':
 	    	os.remove("../data/converted.wav")

@@ -39,7 +39,7 @@ def transcribe_file(speech_file):
         audio_sample = speech_client.sample(
             content=content,
             source_uri=None,
-            encoding='LINEAR16',
+            encoding='FLAC',
             sample_rate_hertz=16000)
 
     alternatives = audio_sample.recognize('en-US')
