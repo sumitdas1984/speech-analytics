@@ -82,10 +82,16 @@ def transcribe_gcs(gcs_uri):
         print('Operation not complete and retry limit reached.')
         return
 
+    full_text = ''
     alternatives = operation.results
     for alternative in alternatives:
         print('Transcript: {}'.format(alternative.transcript))
         print('Confidence: {}'.format(alternative.confidence))
+        full_text += format(alternative.transcript)
+    
+    f = open('temp.txt', 'w')
+    f.write(full_text)
+    f.close()
     # [END send_request_gcs]
 
 
