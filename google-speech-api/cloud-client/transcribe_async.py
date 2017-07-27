@@ -70,7 +70,7 @@ def transcribe_gcs(gcs_uri):
         encoding='FLAC',
         sample_rate_hertz=16000)
 
-    operation = audio_sample.long_running_recognize('en-US')
+    operation = audio_sample.long_running_recognize('en-IN')
 
     retry_count = 100
     while retry_count > 0 and not operation.complete:
@@ -85,11 +85,12 @@ def transcribe_gcs(gcs_uri):
     full_text = ''
     alternatives = operation.results
     for alternative in alternatives:
-        print('Transcript: {}'.format(alternative.transcript))
-        print('Confidence: {}'.format(alternative.confidence))
-        full_text += format(alternative.transcript)
+        # print('Transcript: {}'.format(alternative.transcript))
+        # print('Confidence: {}'.format(alternative.confidence))
+        full_text += ' ' + format(alternative.transcript)
     
-    f = open('temp.txt', 'w')
+    # f = open('temp.txt', 'w')
+    f = open('google-speech-api/cloud-client/temp.txt', 'w')
     f.write(full_text)
     f.close()
     # [END send_request_gcs]

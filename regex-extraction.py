@@ -24,8 +24,8 @@ def normalize(text):
 
 def cfor_cc(text):
 	# cc_regex = re.compile(r'\d{4}-\d{4}-\d{4}-\d{4}|\d{4}\s*\d{4}\s*\d{4}\s*\d{4}|\d{16}')
-	# cc_regex = re.compile(r'\b\d{4}-\d{4}-\d{4}-\d{4}\b|\b\d{16}\b')
-	cc_regex = re.compile(r'\b(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})\b')
+	cc_regex = re.compile(r'\b\d{4}-\d{4}-\d{4}-\d{4}\b|\b\d{16}\b')
+	# cc_regex = re.compile(r'\b(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})\b')
 	f=re.findall(cc_regex, text)
 	return f
 
@@ -46,13 +46,15 @@ if __name__ == "__main__":
 	else:
 		input_file = open(sys.argv[1], 'r')
 		text = input_file.read()
+		print('::STT output::')
 		print(text)
 		text = normalize(text)
 		# print(text)
 		cc_list = cfor_cc(text)
 		ssn_list = cfor_ssn(text)
 
-	if len(cc_list) != 0:
-		print('CC: '+str(cc_list))
-	if len(ssn_list) != 0:
-		print('SSN: '+str(ssn_list))
+		print('::Sensitive Info::')
+		if len(cc_list) != 0:
+			print('CC: '+str(cc_list))
+		if len(ssn_list) != 0:
+			print('SSN: '+str(ssn_list))
