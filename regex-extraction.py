@@ -36,6 +36,11 @@ def cfor_ssn(text):
 	f=re.findall(ssn_regex, text)
 	return f
 
+def cfor_ph(text):
+	ph_regex = re.compile(r'\b\d{10}\b')
+	f=re.findall(ph_regex, text)
+	return f
+
 if __name__ == "__main__":
 
 # 	text = "the card 5610-5910-8101-8250 is sent to John. the other card is 5610 6910 8101 1234" 
@@ -52,9 +57,13 @@ if __name__ == "__main__":
 		# print(text)
 		cc_list = cfor_cc(text)
 		ssn_list = cfor_ssn(text)
+		ph_list = cfor_ph(text)
 
+		print('\n')
 		print('::Sensitive Info::')
 		if len(cc_list) != 0:
 			print('CC: '+str(cc_list))
 		if len(ssn_list) != 0:
 			print('SSN: '+str(ssn_list))
+		if len(ph_list) != 0:
+			print('PH: '+str(ph_list))
