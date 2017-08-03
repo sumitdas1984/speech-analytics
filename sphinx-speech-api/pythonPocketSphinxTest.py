@@ -2,6 +2,7 @@
  
 import sys
 import os
+import re
 # import pocketsphinx
 from pocketsphinx.pocketsphinx import *
  
@@ -52,7 +53,30 @@ if __name__ == "__main__":
 		else:
 			break
 	speech_rec.end_utt()
+	framerate = 100
 	words = []
-	[words.append(seg.word) for seg in speech_rec.seg()]
+	# [words.append(seg.word) for seg in speech_rec.seg()]
+	speech_start_frame = 0
+	for i, seg in enumerate(speech_rec.seg()) :
+		if i == 0 :
+			speech_start_frame = seg.start_frame/framerate
 
-	print "DETECTED: ",words
+		pair = (seg.word,str(seg.start_frame/framerate - speech_start_frame))
+		# print(pair)
+		words.append(pair)		
+	# print "DETECTED: ",words
+
+	text = ''
+	text_ts = ''
+	for w, t in words :
+		if not re.search('<s>|</s>|<sil>',w) :
+			w = re.sub('\(\d\)','',w)
+			text = text + ' ' + w
+			text_ts = text_ts + ' ' + w + '##' + t
+	# print(text)
+	print(text_ts)
+
+    # f = open('sphinx-speech-api/temp.txt', 'w')
+	f = open('temp.txt', 'w')
+	f.write(text)
+	f.close()
