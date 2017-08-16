@@ -69,7 +69,7 @@ if __name__ == "__main__":
 	text = ''
 	text_ts = ''
 	for w, t in words :
-		if not re.search('<s>|</s>|<sil>',w) :
+		if not re.search('<s>|</s>|<sil>|[NOISE]|[SPEECH]',w) :
 			w = re.sub('\(\d\)','',w)
 			text = text + ' ' + w
 			text_ts = text_ts + ' ' + w + '##' + t

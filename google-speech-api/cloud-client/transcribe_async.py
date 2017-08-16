@@ -89,8 +89,8 @@ def transcribe_gcs(gcs_uri):
         # print('Confidence: {}'.format(alternative.confidence))
         full_text += ' ' + format(alternative.transcript)
     
-    # f = open('temp.txt', 'w')
-    f = open('google-speech-api/cloud-client/temp.txt', 'w')
+    f = open('temp.txt', 'w')
+    # f = open('google-speech-api/cloud-client/temp.txt', 'w')
     f.write(full_text)
     f.close()
     # [END send_request_gcs]
