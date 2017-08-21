@@ -3,6 +3,7 @@ import re
 
 def normalize(text):
 	text_norm = ''
+	text = re.sub(r'\.', r'', text)
 	# a = re.split(r"[\s]+", text)
 	a = re.split(r"[\s-]+", text)
 	for w in a:
@@ -31,7 +32,6 @@ def cfor_cc(text):
 
 def cfor_ssn(text):
  	# ssn_regex = re.compile(r'\d{3}-\d{2}-\d{4}|\d{3}\s*\d{2}\s*\d{4}|\d{9}')
-	# ssn_regex = re.compile(r'\b\d{3}-\d{2}-\d{4}\b|\b\d{3}\s*\d{2}\s*\d{4}\b|\b\d{9}\b')
 	ssn_regex = re.compile(r'\b\d{3}-\d{2}-\d{4}\b|\b\d{9}\b')
 	f=re.findall(ssn_regex, text)
 	return f
@@ -41,9 +41,67 @@ def cfor_ph(text):
 	f=re.findall(ph_regex, text)
 	return f
 
+def word_index(text, word, type):
+	approx_start_index = text.split().index(word) + 1
+	if type == 'CC' :
+		approx_end_index = approx_start_index + 4
+	elif type == 'SSN' :
+		approx_end_index = approx_start_index + 3
+	elif type == 'PH' :
+		approx_end_index = approx_start_index + 3
+	else :
+		approx_end_index = approx_start_index + 1
+
+	# print(word + ': ' + str(approx_start_index) + ',' + str(approx_end_index))
+	return (approx_start_index,approx_end_index)
+
+def sensitive_info_index(text, cc_list, ssn_list, ph_list, tts_list) :
+
+	token_start_time_list = []
+	token_end_time_list = []
+	for tts in tts_list:
+		tts_pair = tts.split(',')
+		token_start_time_list.append(tts_pair[0])
+		token_end_time_list.append(tts_pair[1]) 
+	# print(word_start_time_list)
+	# print(word_end_time_list)
+
+	token_list = text.split()
+	cc_count = 0
+	ssn_count = 0
+	ph_count = 0
+	sensitive_info_list = []
+	for index, token in enumerate(token_list) :
+		if token in cc_list :
+			token_type = 'CC'
+			token_start_index = (index+1) + cc_count*4 + ssn_count*3 + ph_count*3
+			token_end_index = token_start_index + 4
+			cc_count = cc_count + 1
+			# sensitive_info_line = token_type + '#' + token + '#' + str(token_start_index) + '#' + str(token_end_index)
+			sensitive_info_line = token_type + '#' + token + '#' + str(token_start_time_list[token_start_index]) + '#' + str(token_end_time_list[token_end_index])
+			sensitive_info_list.append(sensitive_info_line)
+		elif token in ssn_list :
+			token_type = 'SSN'
+			token_start_index = (index+1) + cc_count*4 + ssn_count*3 + ph_count*3
+			token_end_index = token_start_index + 3
+			ssn_count = ssn_count + 1
+			sensitive_info_line = token_type + '#' + token + '#' + str(token_start_time_list[token_start_index]) + '#' + str(token_end_time_list[token_end_index])
+			sensitive_info_list.append(sensitive_info_line)
+		elif token in ph_list :
+			token_type = 'PH'
+			token_start_index = (index+1) + cc_count*4 + ssn_count*3 + ph_count*3
+			token_end_index = token_start_index + 3
+			ph_count = ph_count + 1
+			sensitive_info_line = token_type + '#' + token + '#' + str(token_start_time_list[token_start_index]) + '#' + str(token_end_time_list[token_end_index])
+			sensitive_info_list.append(sensitive_info_line)
+	
+	return sensitive_info_list
+
+
 if __name__ == "__main__":
 
-# 	text = "the card 5610-5910-8101-8250 is sent to John. the other card is 5610 6910 8101 1234" 
+	# text = "the card 56 10 59 1081 018250 is sent to John. His SSN is 821 935 117. My register mobile number is 8983 934 849." 
+	# text = "the card 56 10 59 1081 018250 is sent to John. His SSN is 821 935 117." 
 
 	# check input output file
 	if (len(sys.argv) == 1):
@@ -59,11 +117,37 @@ if __name__ == "__main__":
 		ssn_list = cfor_ssn(text)
 		ph_list = cfor_ph(text)
 
+		wts_list_source = open(sys.argv[2], 'r').readlines()
+		# print(wts_list_source)
+		wts_list = []
+		for wts in wts_list_source:
+			wts = re.sub('\n','',wts)
+			wts_list.append(wts)
+
 		print('\n')
 		print('::Sensitive Info::')
-		if len(cc_list) != 0:
-			print('CC: '+str(cc_list))
-		if len(ssn_list) != 0:
-			print('SSN: '+str(ssn_list))
-		if len(ph_list) != 0:
-			print('PH: '+str(ph_list))
+		sensitive_info_list = sensitive_info_index(text, cc_list, ssn_list, ph_list, wts_list)
+		print(sensitive_info_list)
+
+		f_sensitive_info = open('sensitive_info.txt', 'w')
+		# f_sensitive_info.write('\n'.join(sensitive_info_list))
+		for sensitive_info_line in sensitive_info_list:
+			f_sensitive_info.write(sensitive_info_line + '\n')
+		f_sensitive_info.close()
+
+
+		# if len(cc_list) != 0:
+		# 	print('CC')
+		# 	for cc in cc_list:
+		# 		index = word_index(text, cc, 'CC')
+		# 		print(cc + '\t' + str(index))
+		# if len(ssn_list) != 0:
+		# 	print('SSN')
+		# 	for ssn in ssn_list:
+		# 		index = word_index(text, ssn, 'SSN')
+		# 		print(ssn + '\t' + str(index))
+		# if len(ph_list) != 0:
+		# 	print('PH')
+		# 	for ph in ph_list:
+		# 		index = word_index(text, ph, 'PH')
+		# 		print(ph + '\t' + str(index))

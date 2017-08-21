@@ -4,8 +4,8 @@
 processing.
 
 Example usage:
-    python transcribe.py ../data/test-cases/output1.flac
-    python transcribe.py gs://im-audio-files/output1.flac
+    python transcribe_synchronous.py ../data/test-cases/output1.flac
+    python transcribe_synchronous.py gs://im-audio-files/output1.flac
 """
 
 # [START import_libraries]

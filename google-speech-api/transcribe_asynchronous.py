@@ -3,8 +3,8 @@
 """Google Cloud Speech API sample that demonstrates word time offsets.
 
 Example usage:
-    python transcribe_word_time_offsets.py ../data/test-cases/output1.flac
-    python transcribe_word_time_offsets.py gs://im-audio-files/output1.flac
+    python transcribe_asynchronous.py ../data/test-cases/output1.flac
+    python transcribe_asynchronous.py gs://im-audio-files/output1.flac
 """
 
 import argparse
@@ -68,19 +68,38 @@ def transcribe_gcs_with_word_time_offsets(gcs_uri):
     print('Waiting for operation to complete...')
     result = operation.result(timeout=90)
 
+    full_text = ''
+    # full_word_timestamp_info = ''
+    wts_list = []
+
     alternatives = result.results[0].alternatives
     for alternative in alternatives:
         print('Transcript: {}'.format(alternative.transcript))
         print('Confidence: {}'.format(alternative.confidence))
-
+        full_text += ' ' + format(alternative.transcript)
+        
         for word_info in alternative.words:
             word = word_info.word
             start_time = word_info.start_time
             end_time = word_info.end_time
-            print('Word: {}, start_time: {}, end_time: {}'.format(
-                word,
-                start_time.seconds + start_time.nanos * 1e-9,
-                end_time.seconds + end_time.nanos * 1e-9))
+            # print('Word: {}, start_time: {}, end_time: {}'.format(
+            #     word,
+            #     start_time.seconds + start_time.nanos * 1e-9,
+            #     end_time.seconds + end_time.nanos * 1e-9))
+            # print(word+','+str(start_time.seconds + start_time.nanos * 1e-9)+','+str(end_time.seconds + end_time.nanos * 1e-9))
+            word_timestamp_info = str(start_time.seconds + start_time.nanos * 1e-9)+','+str(end_time.seconds + end_time.nanos * 1e-9)
+            # print(word_timestamp_info)
+            # full_word_timestamp_info = full_word_timestamp_info + word_timestamp_info + '\n'
+            # print('full_word_timestamp_info: '+full_word_timestamp_info)
+            wts_list.append(word_timestamp_info)
+    f = open('temp.txt', 'w')
+    f.write(full_text)
+    f.close()
+    
+    f_wts = open('word_timestamp_info.txt', 'w')
+    f_wts.write('\n'.join(wts_list))
+    f.close()
+
 # [END def_transcribe_gcs]
 
 
