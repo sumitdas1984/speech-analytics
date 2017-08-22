@@ -58,11 +58,11 @@ then
 
 	while read line
 	do
-	echo $line
+	# echo $line
 	start_time="$(cut -d'#' -f3 <<<$line)"
 	end_time="$(cut -d'#' -f4 <<<$line)"
-	echo $start_time
-	echo $end_time
+	# echo $start_time
+	# echo $end_time
 	# ffmpeg "$1" -af "volume=enable='between(t,"$start_time","$end_time")':volume=0" $1
 	speech_file=$modified_file
 	speech_file_mod=$xpath/temp.flac
@@ -71,7 +71,7 @@ then
 	mv $speech_file_mod $speech_file
 	done < sensitive_info.txt
 
-	# rm temp.txt word_timestamp_info.txt sensitive_info.txt
+	rm temp.txt word_timestamp_info.txt sensitive_info.txt
 	rm $flac_file
 	
 

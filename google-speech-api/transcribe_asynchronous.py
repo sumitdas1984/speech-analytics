@@ -74,8 +74,8 @@ def transcribe_gcs_with_word_time_offsets(gcs_uri):
 
     alternatives = result.results[0].alternatives
     for alternative in alternatives:
-        print('Transcript: {}'.format(alternative.transcript))
-        print('Confidence: {}'.format(alternative.confidence))
+        # print('Transcript: {}'.format(alternative.transcript))
+        # print('Confidence: {}'.format(alternative.confidence))
         full_text += ' ' + format(alternative.transcript)
         
         for word_info in alternative.words:
