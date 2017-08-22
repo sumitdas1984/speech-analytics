@@ -27,7 +27,7 @@ then
 		wav_file=$xpath/$xpref$f_ending
 		flac_file=$xpath/$xpref$flac_ext
 		# ffmpeg -i $wav_file -af aformat=s32:16000 -ac 1 $flac_file
-		ffmpeg -i $wav_file -ar 16000 $flac_file
+		ffmpeg -i $wav_file -ar 16000 $flac_file -loglevel quiet
 		rm $wav_file
 
 		path=$flac_file
@@ -66,7 +66,7 @@ then
 	# ffmpeg "$1" -af "volume=enable='between(t,"$start_time","$end_time")':volume=0" $1
 	speech_file=$modified_file
 	speech_file_mod=$xpath/temp.flac
-	ffmpeg -i $speech_file -af "volume=enable='between(t,$start_time,$end_time)':volume=0" $speech_file_mod
+	ffmpeg -i $speech_file -af "volume=enable='between(t,$start_time,$end_time)':volume=0" $speech_file_mod -loglevel quiet
 	rm $speech_file
 	mv $speech_file_mod $speech_file
 	done < sensitive_info.txt
