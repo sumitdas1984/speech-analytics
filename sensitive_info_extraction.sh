@@ -1,5 +1,7 @@
 # !/bin/bash
 
+start=`date +%s`
+
 if [ "$2" = "google" ]
 then
     echo "transcription:: google based"
@@ -17,6 +19,7 @@ then
 	wav_file=''
 	flac_file=''
 
+	flac_flag=false
 	if [ "$xfext" = "nmf" ]
 	then
 		# for input audio files as .nmf file
@@ -36,6 +39,8 @@ then
 		xbase=${path##*/}
 		xfext=${xbase##*.}
 		xpref=${xbase%.*}
+
+		flac_flag=true
 	fi
 
 	# for input audio files as .flac file
@@ -72,7 +77,11 @@ then
 	done < sensitive_info.txt
 
 	rm temp.txt word_timestamp_info.txt sensitive_info.txt
-	rm $flac_file
+
+	if [ "$flac_flag" = true ]
+	then
+		rm $flac_file		
+	fi	
 	
 
 elif [ "$2" = "sphinx" ]
@@ -86,3 +95,9 @@ elif [ "$2" = "sphinx" ]
 else
 	echo "transcription:: out of scope"	
 fi
+
+end=`date +%s`
+
+runtime=$((end-start))
+
+echo 'Execution time (Seconds):'$runtime
