@@ -76,7 +76,20 @@ then
 	mv $speech_file_mod $speech_file
 	done < sensitive_info.txt
 
-	rm temp.txt word_timestamp_info.txt sensitive_info.txt
+	if [ -f temp.txt ]
+	then
+	    rm temp.txt
+	fi
+
+	if [ -f word_timestamp_info.txt ]
+	then
+	    rm word_timestamp_info.txt
+	fi
+
+	if [ -f sensitive_info.txt ]
+	then
+	    rm sensitive_info.txt
+	fi
 
 	if [ "$flac_flag" = true ]
 	then
