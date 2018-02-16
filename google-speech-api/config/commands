@@ -1,4 +1,0 @@
-API_KEY: AIzaSyCqsoePRvrAYwPBX4BtEPNBthOg5_-vJs8
-curl --silent --insecure --header "Content-Type: application/json" \
-"https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyCqsoePRvrAYwPBX4BtEPNBthOg5_-vJs8" \
---data @payload-v1.json

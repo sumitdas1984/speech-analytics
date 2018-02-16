@@ -57,14 +57,19 @@ def word_index(text, word, type):
 
 def sensitive_info_index(text, cc_list, ssn_list, ph_list, tts_list) :
 
+	# print cc_list
+	# print ssn_list
+	# print ph_list
+
 	token_start_time_list = []
 	token_end_time_list = []
 	for tts in tts_list:
 		tts_pair = tts.split(',')
 		token_start_time_list.append(tts_pair[0])
 		token_end_time_list.append(tts_pair[1]) 
-	# print(word_start_time_list)
-	# print(word_end_time_list)
+	# print(token_start_time_list)
+	# print(token_end_time_list)
+
 
 	token_list = text.split()
 	cc_count = 0
@@ -77,8 +82,11 @@ def sensitive_info_index(text, cc_list, ssn_list, ph_list, tts_list) :
 			token_start_index = (index+1) + cc_count*4 + ssn_count*3 + ph_count*3
 			token_end_index = token_start_index + 4
 			cc_count = cc_count + 1
+			# print 'token_start_index: '+str(token_start_index)
+			# print 'token_end_index: '+str(token_end_index)
 			# sensitive_info_line = token_type + '#' + token + '#' + str(token_start_index) + '#' + str(token_end_index)
 			sensitive_info_line = token_type + '#' + token + '#' + str(token_start_time_list[token_start_index]) + '#' + str(token_end_time_list[token_end_index])
+			# print 'sensitive_info_line: '+sensitive_info_line
 			sensitive_info_list.append(sensitive_info_line)
 		elif token in ssn_list :
 			token_type = 'SSN'

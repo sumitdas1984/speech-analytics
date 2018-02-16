@@ -71,7 +71,7 @@ then
 	# ffmpeg "$1" -af "volume=enable='between(t,"$start_time","$end_time")':volume=0" $1
 	speech_file=$modified_file
 	speech_file_mod=$xpath/temp.flac
-	ffmpeg -i $speech_file -af "volume=enable='between(t,$start_time,$end_time)':volume=0" $speech_file_mod -loglevel quiet
+	< /dev/null ffmpeg -i $speech_file -af "volume=enable='between(t,$start_time,$end_time)':volume=0" $speech_file_mod -loglevel quiet
 	rm $speech_file
 	mv $speech_file_mod $speech_file
 	done < sensitive_info.txt
@@ -86,10 +86,10 @@ then
 	    rm word_timestamp_info.txt
 	fi
 
-	if [ -f sensitive_info.txt ]
-	then
-	    rm sensitive_info.txt
-	fi
+	# if [ -f sensitive_info.txt ]
+	# then
+	#     rm sensitive_info.txt
+	# fi
 
 	if [ "$flac_flag" = true ]
 	then
