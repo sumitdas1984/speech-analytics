@@ -2,9 +2,9 @@
 
 Tools need to be installed
 --------------------------
-1. google-cloud-speech python lib
-2. ffmpeg
-3. gutils
+1. google-cloud-speech (it's a python library. install using pip)
+2. ffmpeg (install this as linux program)
+3. gsutils (install using gcloud. after installing gcloud configure gcloud using 'gcloud init')
 
 Configuration
 -------------
